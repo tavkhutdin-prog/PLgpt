@@ -1,0 +1,293 @@
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>P&L / ОПиУ для производственного бизнеса — управленческий отчет</title>
+  <meta name="description" content="Управленческий отчет о прибыли и убытках (P&L / ОПиУ) для производственного бизнеса. Поймите структуру отчета, научитесь его читать и посчитайте прибыль с наглядной визуализацией."/>
+  <meta property="og:title" content="P&L / ОПиУ для производственного бизнеса"/>
+  <meta property="og:description" content="Интерактивный управленческий отчет о прибыли и убытках с калькулятором и визуализацией показателей."/>
+
+  <!-- Favicon (inline SVG) -->
+  <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml;utf8,
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'>
+          <rect width='100' height='100' rx='20' fill='%2302569B'/>
+          <polyline points='20,65 40,45 60,55 80,30'
+            fill='none' stroke='white' stroke-width='8'/>
+        </svg>"/>
+
+  <style>
+    :root{
+      --bg:#f7f9fc;
+      --primary:#02569B;
+      --secondary:#0d6efd;
+      --text:#1f2937;
+      --muted:#6b7280;
+      --card:#ffffff;
+      --border:#e5e7eb;
+      --radius:14px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ubuntu;
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.55;
+    }
+    header,section,footer{
+      padding:64px 20px;
+    }
+    .container{
+      max-width:1200px;
+      margin:0 auto;
+    }
+    h1,h2,h3{
+      line-height:1.2;
+    }
+    h1{font-size:40px;margin-bottom:16px}
+    h2{font-size:32px;margin-bottom:24px}
+    h3{font-size:20px;margin-bottom:8px}
+    p{margin:0 0 12px}
+    .muted{color:var(--muted)}
+    .btn{
+      display:inline-block;
+      background:var(--primary);
+      color:#fff;
+      padding:14px 24px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:600;
+    }
+    .grid{
+      display:grid;
+      gap:24px;
+    }
+    .grid-2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+    .grid-3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:24px;
+    }
+    .hero{
+      background:linear-gradient(135deg,#e8f2ff,#ffffff);
+    }
+    .hero .container{
+      display:grid;
+      grid-template-columns:1.2fr 0.8fr;
+      gap:40px;
+    }
+    @media(max-width:900px){
+      .hero .container{grid-template-columns:1fr}
+      h1{font-size:32px}
+    }
+
+    /* Calculator */
+    label{
+      display:block;
+      font-size:14px;
+      margin-bottom:4px;
+    }
+    input{
+      width:100%;
+      padding:10px 12px;
+      border:1px solid var(--border);
+      border-radius:8px;
+      margin-bottom:12px;
+      font-size:14px;
+    }
+
+    /* Bars */
+    .bar{
+      height:14px;
+      background:#e5e7eb;
+      border-radius:999px;
+      overflow:hidden;
+      margin-bottom:10px;
+    }
+    .bar > span{
+      display:block;
+      height:100%;
+      background:var(--secondary);
+      width:0%;
+      transition:width .3s ease;
+    }
+
+    /* Waterfall (simple stacked view) */
+    .wf-step{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:6px;
+      font-size:14px;
+    }
+    .wf-step strong{font-weight:600}
+
+    footer{
+      background:#fff;
+      border-top:1px solid var(--border);
+      text-align:center;
+      font-size:14px;
+      color:var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="hero">
+  <div class="container">
+    <div>
+      <h1>Отчет о прибыли и убытках (P&amp;L / ОПиУ)<br/>для производственного бизнеса</h1>
+      <p class="muted">Как читать экономику производства, а не просто цифры</p>
+      <ul>
+        <li>Поймите, где формируется прибыль</li>
+        <li>Разберитесь, какие затраты критичны</li>
+        <li>Увидьте показатели на своих данных</li>
+      </ul>
+      <a href="#calculator" class="btn">Посчитать и разобраться</a>
+      <p class="muted" style="margin-top:12px;font-size:13px">
+        Пример управленческого учета. Отличается от стандартизированной финансовой отчетности (IFRS / РСБУ).
+      </p>
+    </div>
+    <div class="card">
+      <h3>Структура управленческого ОПиУ</h3>
+      <p class="muted">
+        Выручка → Маржа → Валовая прибыль → EBITDA → Чистая прибыль
+      </p>
+      <svg viewBox="0 0 200 120" width="100%" aria-label="Схема P&L">
+        <polyline points="10,100 50,70 90,80 130,40 170,20"
+          fill="none" stroke="#02569B" stroke-width="4"/>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="container">
+    <h2>Структура управленческого ОПиУ</h2>
+    <div class="card">
+      <pre>
+Выручка
+− Переменные издержки
+= Маржинальный доход
+− Постоянные производственные издержки
+= Валовая прибыль
+− Операционные издержки
+= EBITDA
+− Амортизация / Проценты / Налоги
+= Чистая прибыль
+      </pre>
+      <p class="muted">Отчет читается строго сверху вниз.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Как читать отчет</h2>
+    <div class="grid grid-2">
+      <div class="card"><h3>Маржинальный доход</h3><p>Показывает, зарабатывает ли продукт и сколько денег остается на покрытие постоянных затрат.</p></div>
+      <div class="card"><h3>Валовая прибыль</h3><p>Характеризует эффективность производственной модели.</p></div>
+      <div class="card"><h3>EBITDA</h3><p>Показывает операционную устойчивость бизнеса.</p></div>
+      <div class="card"><h3>Чистая прибыль</h3><p>Итог для собственника, но не лучший показатель для управления.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="calculator">
+  <div class="container">
+    <h2>Интерактивный калькулятор и визуализация</h2>
+    <div class="grid grid-2">
+      <!-- Inputs -->
+      <div class="card">
+        <h3>Введите данные</h3>
+        <label>Выручка</label><input type="number" id="revenue" value="1000000"/>
+        <label>Переменные издержки</label><input type="number" id="variable" value="400000"/>
+        <label>Постоянные производственные</label><input type="number" id="fixedProd" value="200000"/>
+        <label>Операционные издержки</label><input type="number" id="opex" value="150000"/>
+        <label>Амортизация</label><input type="number" id="da" value="50000"/>
+        <label>Проценты</label><input type="number" id="interest" value="30000"/>
+        <label>Налоги</label><input type="number" id="tax" value="40000"/>
+        <label>Изменение запасов (+ / −)</label><input type="number" id="inventory" value="0"/>
+      </div>
+
+      <!-- Visualization -->
+      <div class="card">
+        <h3>Результаты</h3>
+
+        <div class="wf-step"><span>Маржинальный доход</span><strong id="md">0</strong></div>
+        <div class="wf-step"><span>Валовая прибыль</span><strong id="gp">0</strong></div>
+        <div class="wf-step"><span>EBITDA</span><strong id="ebitda">0</strong></div>
+        <div class="wf-step"><span>Чистая прибыль</span><strong id="net">0</strong></div>
+
+        <h4>Рентабельность</h4>
+        <p>Маржинальная</p><div class="bar"><span id="mdBar"></span></div>
+        <p>Валовая</p><div class="bar"><span id="gpBar"></span></div>
+        <p>EBITDA</p><div class="bar"><span id="ebBar"></span></div>
+        <p>Чистая</p><div class="bar"><span id="netBar"></span></div>
+
+        <h4>Сравнение подходов</h4>
+        <p class="muted">
+          Управленческая прибыль vs «стандартизированная»
+        </p>
+        <div class="wf-step">
+          <span>Стандартизированная прибыль</span>
+          <strong id="std">0</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Материал носит образовательный характер. Пример управленческого учета.</p>
+</footer>
+
+<script>
+  const inputs = document.querySelectorAll("input");
+  inputs.forEach(i => i.addEventListener("input", calc));
+
+  function calc(){
+    const revenue = +revenueEl.value;
+    const variable = +variableEl.value;
+    const fixedProd = +fixedProdEl.value;
+    const opex = +opexEl.value;
+    const da = +daEl.value;
+    const interest = +interestEl.value;
+    const tax = +taxEl.value;
+    const inv = +inventoryEl.value;
+
+    const mdVal = revenue - variable;
+    const gpVal = mdVal - fixedProd;
+    const ebitdaVal = gpVal - opex;
+    const netVal = ebitdaVal - da - interest - tax;
+    const stdNet = netVal + inv;
+
+    md.textContent = mdVal.toLocaleString();
+    gp.textContent = gpVal.toLocaleString();
+    ebitda.textContent = ebitdaVal.toLocaleString();
+    net.textContent = netVal.toLocaleString();
+    std.textContent = stdNet.toLocaleString();
+
+    mdBar.style.width = Math.max(0, mdVal/revenue*100) + "%";
+    gpBar.style.width = Math.max(0, gpVal/revenue*100) + "%";
+    ebBar.style.width = Math.max(0, ebitdaVal/revenue*100) + "%";
+    netBar.style.width = Math.max(0, netVal/revenue*100) + "%";
+  }
+
+  const revenueEl = document.getElementById("revenue");
+  const variableEl = document.getElementById("variable");
+  const fixedProdEl = document.getElementById("fixedProd");
+  const opexEl = document.getElementById("opex");
+  const daEl = document.getElementById("da");
+  const interestEl = document.getElementById("interest");
+  const taxEl = document.getElementById("tax");
+  const inventoryEl = document.getElementById("inventory");
+
+  calc();
+</script>
+
+</body>
+</html>
